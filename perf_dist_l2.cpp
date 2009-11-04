@@ -106,7 +106,7 @@ perf(int N, int D)
     double* pnts_d;
 
     // Arrays of points
-    pnts_d = gen_unit_random<double>(N, D);
+    pnts_d = gen_unit_random<double>(N, D, 42);
     pnts_s = new float[N*D];
     pnts_uc = new unsigned char[N*D];
     
