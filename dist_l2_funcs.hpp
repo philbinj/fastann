@@ -300,16 +300,13 @@ dl2v_2_8(const double* qu, const double* pnts,
 }
 #endif
 
-/**
- * GCC does such a piss poor attempt at optimizing the above 
- * intrinsics I thought i'd have a go myself in pure assembly.
- */
-extern "C"
-void
-dl2v_2_8_var2(const double* qu, const double* pnts,
-              unsigned N, unsigned D,
-              double* dsq_out);
-
 }
+
+extern "C" void dl2v_2_8_exp(
+        const double* qu,
+        const double* pnts,
+        unsigned N,
+        unsigned D,
+        double* dsq_out);
 
 #endif
