@@ -11,7 +11,7 @@ libfastann.so: dist_l2.o fastann.o randomkit.o
 	${CXX} ${CXXFLAGS} -shared dist_l2.o fastann.o randomkit.o -o libfastann.so
 
 dist_l2.o: dist_l2.cpp dist_l2.hpp dist_l2_funcs.hpp
-	${CXX} -Wall -O2 -fomit-frame-pointer -msse2 -march=native -c dist_l2.cpp -o dist_l2.o
+	${CXX} -Wall -O2 -fomit-frame-pointer -msse2 -march=native -fPIC -c dist_l2.cpp -o dist_l2.o
 
 fastann.o: fastann.cpp fastann.hpp nn_kdtree.hpp
 
