@@ -18,12 +18,16 @@ these can be improved).
 ---------------------------------------------------------------------
 Before installation the following requirements should be met:
 - Linux GCC or Cygwin (native windows coming soon)
+- Yasm (http://www.tortall.net/projects/yasm/)
 
 Build the library
 > make
 
 Test the library (everything should say PASSED)
 > make test
+
+Time the routines
+> make perf
 
 Install the library to /usr/include and /usr/lib
 > make install
@@ -61,6 +65,10 @@ In no particular order:
 ---------------------------------------------------------------------
 | CHANGELOG                                                         |
 ---------------------------------------------------------------------
+v0.11
+    - Moved to pure static library
+    - Added experimental hand coded double precision distance 
+      routine.
 v0.1
     - Initial checkin.
     - Support for exact NN and approximate k-d trees.
