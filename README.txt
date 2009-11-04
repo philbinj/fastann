@@ -57,6 +57,7 @@ In no particular order:
 - C interface (for easy use with Python / Matlab)
 - Improved distance functions (gcc makes a cockup of some of the
   intrinsics based ones like the double precision ones.
+- This doesn't work on 64-bit!
 - Better use of cache in kdtree. This might involve using prefetches,
   re-ordering the points in some way or even placing the point data in
   the nodes.
