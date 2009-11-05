@@ -89,7 +89,9 @@ test(int N, int D, int& num_passed, int& num_failed)
         { &dl2f_1_8, "dl2f_1_8" },
 #ifdef __SSE2__
         { &dl2v_2_8, "dl2v_2_8" },
+#ifdef EXPERIMENTAL_ASM
         { &dl2v_2_8_exp, "dl2v_2_8_exp" },
+#endif
 #endif
     };
     

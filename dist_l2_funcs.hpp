@@ -302,11 +302,13 @@ dl2v_2_8(const double* qu, const double* pnts,
 
 }
 
+#ifdef EXPERIMENTAL_ASM
 extern "C" void dl2v_2_8_exp(
         const double* qu,
         const double* pnts,
         unsigned N,
         unsigned D,
         double* dsq_out);
+#endif
 
 #endif
