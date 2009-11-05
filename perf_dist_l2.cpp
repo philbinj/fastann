@@ -149,7 +149,7 @@ int
 main()
 {
     static const int N_D_pairs[][2] =
-    {   {500, 16}, {500, 32}, {500, 64},
+    {   {500, 16}, {500, 32}, {500,50}, {500, 64},
         {500, 128}, {500, 256} };
 
    for (size_t i=0; i < sizeof(N_D_pairs)/sizeof(int[2]); ++i) {

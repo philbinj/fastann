@@ -25,6 +25,15 @@ IF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "4")
         DEPENDS dist_l2_funcs_exp.asm)
     SET(YASM_OBJS ${YASM_OBJS} dist_l2_funcs_exp.o)
 ENDIF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "4")
+IF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "8")
+    MESSAGE("Using experimental asm routines")
+    ADD_DEFINITIONS(-DEXPERIMENTAL_ASM)
+    ADD_CUSTOM_COMMAND(
+        OUTPUT dist_l2_funcs_exp_64.o
+        COMMAND yasm ARGS -f elf64 dist_l2_funcs_exp_64.asm -o dist_l2_funcs_exp_64.o
+        DEPENDS dist_l2_funcs_exp_64.asm)
+    SET(YASM_OBJS ${YASM_OBJS} dist_l2_funcs_exp_64.o)
+ENDIF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "8")
 
 ADD_LIBRARY(fastann SHARED dist_l2.cpp fastann.cpp randomkit.c ${YASM_OBJS})
 
