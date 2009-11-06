@@ -167,7 +167,7 @@ sl2u_2_16_exp:
     
     ; This might help
     ;prefetcht1 [local_qu]
-    prefetchnta [local_pntn]
+    prefetcht1 [local_pntn]
     
     ; Quick bail for N=0
     mov local_pntn, pnts
@@ -185,7 +185,7 @@ sl2u_2_16_exp:
     and local_d, -16
     jmp .end_D_16_loop
 .D_16_loop:
-    prefetchnta [local_pntn + 32]
+    prefetcht1 [local_pntn + 32]
 
     movlps xmm0, [local_qu]
     movhps xmm0, [local_qu + 8]
@@ -204,8 +204,7 @@ sl2u_2_16_exp:
     addps xmm4, xmm0
     addps xmm5, xmm2
 
-    prefetchnta [local_pntn + 64]
-    
+    prefetcht1 [local_pntn + 64]
     movlps xmm0, [local_qu + 32]
     movhps xmm0, [local_qu + 40]
     movlps xmm1, [local_pntn + 32]
