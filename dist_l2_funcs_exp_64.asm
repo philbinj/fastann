@@ -135,8 +135,7 @@ size sl2u_2_16_exp sl2u_2_16_exp.endfunc - sl2u_2_16_exp
 ALIGN 16
 sl2u_2_16_exp:
     ; This might help
-    ;prefetcht1 [local_qu]
-    prefetchnta [local_pntn]
+    prefetcht1 [local_pntn]
     
     ; Quick bail for N=0
     test local_n, local_n
@@ -150,8 +149,7 @@ sl2u_2_16_exp:
     and local_d, -16
     jmp .end_D_16_loop
 .D_16_loop:
-    prefetchnta [local_pntn + 32]
-    prefetchnta [local_pntn + 64]
+    prefetcht1 [local_pntn + 64]
 
     movups xmm0, [local_qu]
     movups xmm1, [local_pntn]
