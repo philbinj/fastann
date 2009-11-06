@@ -53,7 +53,7 @@ time_routine(AccumFloat dummy,
 
     delete[] dm;
 
-    return ((double)(t2 - t1)/(3.0 * N * N * D));
+    return ((double)(t2 - t1)/(N * N * D));
 }
 
 struct cl2func_name_pair
@@ -90,6 +90,9 @@ perf(int N, int D)
         { &sl2f_1_8, "sl2f_1_8" },
 #ifdef __SSE__
         { &sl2u_2_8, "sl2u_2_8" },
+#ifdef EXPERIMENTAL_ASM
+        { &sl2u_2_16_exp, "sl2u_2_16_exp" },
+#endif
 #endif
     };
 
@@ -100,6 +103,7 @@ perf(int N, int D)
         { &dl2v_2_8, "dl2v_2_8" },
 #ifdef EXPERIMENTAL_ASM
         { &dl2v_2_8_exp, "dl2v_2_8_exp" },
+//        { &dl2v_2_8_exp2, "dl2v_2_8_exp2" },
 #endif
 #endif
     };

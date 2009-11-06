@@ -22,7 +22,11 @@ dist_l2_best(unsigned D)
 {
     dist_l2_wrapper<float> ret;
 #ifdef __SSE__
+#ifdef EXPERIMENTAL_ASM
+    ret.func = &sl2u_2_16_exp;
+#else
     ret.func = &sl2u_2_8;
+#endif
 #else
     ret.func = &sl2f_1_8;
 #endif

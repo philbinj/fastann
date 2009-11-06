@@ -40,6 +40,9 @@ ADD_LIBRARY(fastann SHARED dist_l2.cpp fastann.cpp randomkit.c ${YASM_OBJS})
 ADD_EXECUTABLE(perf_dist_l2 perf_dist_l2.cpp)
 TARGET_LINK_LIBRARIES(perf_dist_l2 fastann)
 
+ADD_EXECUTABLE(perf_kdtree perf_kdtree.cpp)
+TARGET_LINK_LIBRARIES(perf_kdtree fastann)
+
 ADD_EXECUTABLE(test_dist_l2 test_dist_l2.cpp)
 TARGET_LINK_LIBRARIES(test_dist_l2 fastann)
 

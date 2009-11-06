@@ -309,6 +309,20 @@ extern "C" void dl2v_2_8_exp(
         unsigned N,
         unsigned D,
         double* dsq_out);
+
+extern "C" void sl2u_2_16_exp(
+        const float* qu,
+        const float* pnts,
+        unsigned N,
+        unsigned D,
+        float* dsq_out);
+
+//extern "C" void dl2v_2_8_exp2(
+//        const double* qu,
+//        const double* pnts,
+//        unsigned N,
+//        unsigned D,
+//        double* dsq_out);
 #endif
 
 #endif

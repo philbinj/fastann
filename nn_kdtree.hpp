@@ -183,44 +183,35 @@ public:
            DiscFloat mindsq) __attribute__ ((noinline))
     {
         this_type* cur = this;
-        this_type* follow = 0;
         this_type* other = 0;
 
         while (!cur->is_leaf()) { // Follow best bin first until we hit a leaf
             DiscFloat diff = qu[cur->internal_node_data.disc_dim_] - cur->internal_node_data.disc_;
 
             if (diff < 0) {
-                follow = cur->left_;
                 other = cur->internal_node_data.right_;
+                cur = cur->left_;
             }
             else {
-                follow = cur->internal_node_data.right_;
                 other = cur->left_;
+                cur = cur->internal_node_data.right_;
             }
 
             pri_branch.push(std::make_pair(mindsq + diff*diff, other));
-            cur = follow;
         }
 
         unsigned* cur_inds = cur->leaf_node_data.indices_;
         unsigned ncur_inds = cur->leaf_node_data.num_points_;
         
         unsigned i;
-        for (i = 0; i < ncur_inds-1; ++i) {
-            //_mm_prefetch(&pnts[cur_inds[i+1]*D], _MM_HINT_T2);
-            //_mm_prefetch(&pnts[cur_inds[i+1]*D + 64], _MM_HINT_NTA);
-            if (!seen[cur_inds[i]]) {                
+        for (i = 0; i < ncur_inds; ++i) {
+            if (!seen[cur_inds[i]]) {
                 DistFloat dsq;
                 dist.func(qu, &pnts[cur_inds[i]*D], 1, D, &dsq);
                 nns.push_back(std::make_pair(cur_inds[i], dsq));
 
                 seen[cur_inds[i]] = true;
             }
-        }
-        if (!seen[cur_inds[i]]) {                
-            DistFloat dsq;
-            dist.func(qu, &pnts[cur_inds[i]*D], 1, D, &dsq);
-            nns.push_back(std::make_pair(cur_inds[i], dsq));
         }
     }
 };
@@ -273,6 +264,8 @@ public:
 
         std::vector< std::pair<unsigned, DistFloat> > nns;
         std::vector<bool> seen(N_, false);
+
+        nns.reserve((3*nchecks)/2); // Might as well
 
         // Search each tree at least once.
         for (size_t t=0; t<trees_.size(); ++t) {
