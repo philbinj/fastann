@@ -17,8 +17,9 @@ these can be improved).
 | INSTALLATION                                                      |
 ---------------------------------------------------------------------
 Before installation the following requirements should be met:
-- Linux GCC or Cygwin (native windows coming soon)
-- Yasm (http://www.tortall.net/projects/yasm/)
+- Linux
+- CMake >= 2.6.0
+- Yasm (http://www.tortall.net/projects/yasm/) (OPTIONAL)
 
 Build the library
 > make
@@ -29,35 +30,28 @@ Test the library (everything should say PASSED)
 Time the routines
 > make perf
 
-Install the library to /usr/include and /usr/lib
+Install the library to /usr/include and /usr/lib (as root)
 > make install
+
+---------------------------------------------------------------------
+| INTERFACES                                                        |
+---------------------------------------------------------------------
+The Python interface has the following requirements:
+- Python >= 2.5.0
+- Numpy >= 1.2.0
+
+Install (as root)
+> cd interfaces/python && python setup.py install
 
 ---------------------------------------------------------------------
 | USAGE                                                             |
 ---------------------------------------------------------------------
 See examples/
-C++ example:
-    #include <fastann/fastann.hpp>
-    
-    float* pnts = ...; // Points to search over go here
-    
-    fastann::nn_obj<float>* nno = 
-       fastann::nn_obj_build_kdtree(pnts, npoints, ndims, 8, 768);
-    
-    float* qus = ...; // Points to query go here
-    float* mins[nqueries];
-    unsigned* argmins[nqueries];
-    
-    nno->search_nn(qus, nqueries, argmins, mins);
 
 ---------------------------------------------------------------------
 | TODO                                                              |
 ---------------------------------------------------------------------
 In no particular order:
-- C interface (for easy use with Python / Matlab)
-- Improved distance functions (gcc makes a cockup of some of the
-  intrinsics based ones like the double precision ones.
-- This doesn't work on 64-bit!
 - Better use of cache in kdtree. This might involve using prefetches,
   re-ordering the points in some way or even placing the point data in
   the nodes.
@@ -66,8 +60,13 @@ In no particular order:
 ---------------------------------------------------------------------
 | CHANGELOG                                                         |
 ---------------------------------------------------------------------
+v0.2
+    - Moved over to using CMake -- much improved build.
+    - Implemented C compatible routines in fastann.h
+    - Added Python wrapper routines using ctypes.
+    - Faster distance functions for 32-bit and 64-bit platforms.
 v0.11
-    - Moved to pure static library
+    - Moved to pure static library.
     - Added experimental hand coded double precision distance 
       routine.
 v0.1
