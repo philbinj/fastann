@@ -26,7 +26,7 @@ SECTION .text
 %define local_n     edx
 %define local_dsq_out r8
 %define local_d     eax
-%define local_qu    r8
+%define local_qu    r10
 %define local_pntn  rsi
 
 global dl2v_2_8_exp
@@ -70,8 +70,8 @@ dl2v_2_8_exp:
     
     addpd xmm8, xmm0
     addpd xmm9, xmm2
-    addpd xmm8, xmm0
-    addpd xmm9, xmm2
+    addpd xmm8, xmm4
+    addpd xmm9, xmm6
 
     add local_pntn, 8*8
     add local_qu, 8*8
@@ -111,7 +111,7 @@ dl2v_2_8_exp:
 .endfunc
 
 ;-------------------------------------------------------------------;
-; sl2v_2_8_exp(                                                     ;
+; sl2u_2_16_exp(                                                     ;
 ;                  const float* qu,         esp+0x8                 ;
 ;                  const float* pnts,       esp+0xc                 ;
 ;                  unsigned N,              esp+0x10                ;
@@ -125,7 +125,7 @@ dl2v_2_8_exp:
 %define local_n       edx
 %define local_dsq_out r8
 %define local_d       eax
-%define local_qu      r8
+%define local_qu      r9
 %define local_pntn    rsi
 
 global sl2u_2_16_exp
@@ -188,7 +188,7 @@ sl2u_2_16_exp:
     movss xmm0, [local_qu]
     subss xmm0, [local_pntn]
     mulss xmm0, xmm0
-    addss xmm4, xmm0
+    addss xmm8, xmm0
     add local_qu, 4
     add local_pntn, 4
     sub local_d, 1
