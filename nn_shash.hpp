@@ -122,6 +122,8 @@ train_spectral_hash(const Float* data, unsigned N, unsigned D, unsigned nbits)
     std::vector<double> proj_points(npca*N, 0.0);
     std::vector<double> mn(npca, 0.0);
     std::vector<double> mx(npca, 0.0);
+    std::vector<double> R(npca, 0.0);
+    std::vector<double> maxmode(npca, 0.0);
 //    % algo:
 //    % 1) PCA
 //    npca = min(nbits, Ndim);
@@ -144,6 +146,15 @@ train_spectral_hash(const Float* data, unsigned N, unsigned D, unsigned nbits)
 //    % 3) enumerate eigenfunctions
 //    R=(mx-mn);
 //    maxMode=ceil((nbits+1)*R/max(R));
+    double maxR = 0.0;
+    for (unsigned p = 0; p < npca; ++p) {
+        R[p] = mx[p] - mn[p];
+        if (R[p] > maxR) maxR = R[p];
+    }
+    for (unsigned p = 0; p < npca; ++p) {
+        maxmode[p] = ceil((nbits + 1)*R[p]/maxR);
+    }
+    
 }
 
 void
