@@ -36,6 +36,7 @@ size dl2v_2_8_exp dl2v_2_8_exp.endfunc - dl2v_2_8_exp
 ALIGN 16
 dl2v_2_8_exp:
     ; Quick bail for N=0
+    prefetcht1 [local_pntn]
     test local_n, local_n
     jmp .end_N_loop
 
@@ -49,6 +50,7 @@ dl2v_2_8_exp:
     jmp .end_D_8_loop
 
 .D_8_loop:
+    prefetcht1 [local_pntn + 64]
     movupd xmm0, [local_qu]
     movupd xmm1, [local_pntn]
     movupd xmm2, [local_qu + 16]
@@ -59,18 +61,19 @@ dl2v_2_8_exp:
     movupd xmm7, [local_pntn + 48]
     
     subpd xmm0, xmm1
-    subpd xmm2, xmm3
-    subpd xmm4, xmm5
-    subpd xmm6, xmm7
-    
     mulpd xmm0, xmm0
-    mulpd xmm2, xmm2
-    mulpd xmm4, xmm4
-    mulpd xmm6, xmm6
-    
     addpd xmm8, xmm0
+    
+    subpd xmm2, xmm3
+    mulpd xmm2, xmm2
     addpd xmm9, xmm2
+    
+    subpd xmm4, xmm5
+    mulpd xmm4, xmm4
     addpd xmm8, xmm4
+    
+    subpd xmm6, xmm7
+    mulpd xmm6, xmm6
     addpd xmm9, xmm6
 
     add local_pntn, 8*8
@@ -139,12 +142,50 @@ sl2u_2_16_exp:
     
     ; Quick bail for N=0
     test local_n, local_n
-    jmp .end_N_loop
+    jz .end_N_loop
 .N_loop:
     mov local_qu, qu
     xorps xmm8, xmm8     ; acc1 = 0.0
     xorps xmm9, xmm9     ; acc2 = 0.0
+
+    test local_qu, 15
+    jnz .pre_D_16_loop
+
+.pre_D_QA_16_loop:
+    mov local_d, D
+    and local_d, -16
+    jmp .end_D_QA_16_loop
+.D_QA_16_loop:
+    prefetcht1 [local_pntn + 64]
+    movups xmm0, [local_pntn]
+    movups xmm1, [local_pntn + 16]
+    movups xmm2, [local_pntn + 32]
+    movups xmm3, [local_pntn + 48]
+
+    subps xmm0, [local_qu]
+    subps xmm1, [local_qu + 16]
+    subps xmm2, [local_qu + 32]
+    subps xmm3, [local_qu + 48]
     
+    mulps xmm0, xmm0
+    mulps xmm1, xmm1
+    mulps xmm2, xmm2
+    mulps xmm3, xmm3
+    
+    addps xmm8, xmm0
+    addps xmm9, xmm1
+    addps xmm8, xmm2
+    addps xmm9, xmm3
+    
+    add local_pntn, 16*4
+    add local_qu, 16*4
+    sub local_d, 16
+.end_D_QA_16_loop:
+    jnz .D_QA_16_loop
+
+    jmp .pre_D_loop
+    
+.pre_D_16_loop:
     mov local_d, D
     and local_d, -16
     jmp .end_D_16_loop
@@ -181,9 +222,12 @@ sl2u_2_16_exp:
 .end_D_16_loop:
     jnz .D_16_loop
 
+.pre_D_loop
     mov local_d, D
     and local_d, 15
-    jz .end_D_loop
+
+    test local_d, local_d
+    jmp .end_D_loop
 .D_loop:
     movss xmm0, [local_qu]
     subss xmm0, [local_pntn]
@@ -199,6 +243,7 @@ sl2u_2_16_exp:
     addps xmm8, xmm9
     movaps xmm0, xmm8
 
+    ; Suprisingly, haddps actually seems to be slower
     movhlps xmm1, xmm0
     addps xmm0, xmm1
     movaps xmm1, xmm0

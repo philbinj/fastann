@@ -6,6 +6,8 @@
 #include <queue>
 #include <vector>
 
+#include <stdint.h>
+
 #include "randomkit.h"
 
 #include "dist_l2_funcs.hpp"
@@ -259,6 +261,11 @@ public:
     void
     search(const Float* qu, dist_l2_wrapper<Float> dist, unsigned numnn, std::pair<unsigned, DistFloat>* ret_nns, unsigned nchecks) const
     {
+        // We should 16-byte align qu here.
+        Float* qu_new_base = (Float*)malloc(D_ * sizeof(Float) + 16);
+        Float* qu_new = (Float*)(((intptr_t)qu_new_base+15) & -16);
+        std::copy(qu, qu + D_, qu_new);
+
         if (nchecks < numnn) { nchecks = numnn; }
         BPQ pri_branch;
 
@@ -278,12 +285,14 @@ public:
             std::pair<DiscFloat, node_type* > pr = pri_branch.top();
             pri_branch.pop();
 
-            pr.second->search(qu, pri_branch, dist, nns, seen, pnts_, D_, pr.first);
+            pr.second->search(qu_new, pri_branch, dist, nns, seen, pnts_, D_, pr.first);
         }
 
         std::partial_sort(nns.begin(), nns.begin() + numnn, nns.end(), cmp);
 
         std::copy(nns.begin(), nns.begin() + std::min(numnn, nchecks), ret_nns);
+
+        free(qu_new_base);
     }
 };
 
