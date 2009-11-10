@@ -23,7 +23,7 @@ public:
                             unsigned* argmins, Float* mins) const = 0;
     
     virtual void add_points(const Float* pnts, unsigned N)
-    { throw 0; }
+    { }
 
     virtual unsigned ndims() const = 0;
     virtual unsigned npoints() const = 0;
@@ -45,7 +45,7 @@ public:
                             unsigned* argmins, unsigned* mins) const = 0;
 
     virtual void add_points(const unsigned char* pnts, unsigned N)
-    { throw 0; }
+    {}
 
     virtual unsigned ndims() const = 0;
     virtual unsigned npoints() const = 0;
