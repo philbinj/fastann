@@ -60,6 +60,8 @@ In no particular order:
 ---------------------------------------------------------------------
 | CHANGELOG                                                         |
 ---------------------------------------------------------------------
+v0.21
+    - Added reference
 v0.2
     - Moved over to using CMake -- much improved build.
     - Implemented C compatible routines in fastann.h
@@ -72,3 +74,10 @@ v0.11
 v0.1
     - Initial checkin.
     - Support for exact NN and approximate k-d trees.
+
+---------------------------------------------------------------------
+| REFERENCES                                                        |
+---------------------------------------------------------------------
+[1] Muja, M. and Lowe, D.
+    Fast approximate nearest neighbors with automatic algorithm 
+    configuration, VISAPP 2009
