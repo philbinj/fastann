@@ -267,6 +267,7 @@ public:
         std::copy(qu, qu + D_, qu_new);
 
         if (nchecks < numnn) { nchecks = numnn; }
+        if (nchecks > N_) { nchecks = N_; }
         BPQ pri_branch;
 
         std::vector< std::pair<unsigned, DistFloat> > nns;
