@@ -21,8 +21,8 @@ Before installation the following requirements should be met:
 - CMake >= 2.6.0
 - Yasm (http://www.tortall.net/projects/yasm/) (OPTIONAL)
 
-Build the library
-> make
+Build the library for installing to /usr/local/ (default /usr/)
+> PREFIX=/usr/local/ cmake . && make
 
 Test the library (everything should say PASSED)
 > make test
@@ -30,7 +30,7 @@ Test the library (everything should say PASSED)
 Time the routines
 > make perf
 
-Install the library to /usr/include and /usr/lib (as root)
+Install the library to $PREFIX/include and $PREFIX/lib
 > make install
 
 ---------------------------------------------------------------------
@@ -60,6 +60,8 @@ In no particular order:
 ---------------------------------------------------------------------
 | CHANGELOG                                                         |
 ---------------------------------------------------------------------
+v0.22
+    - Adding stuff for installing to a specified path
 v0.21
     - Added reference
 v0.2

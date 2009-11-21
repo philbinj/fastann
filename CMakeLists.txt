@@ -8,16 +8,23 @@ IF(WIN32)
 ENDIF(WIN32)
 
 IF(UNIX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -msse2 -march=native -fno-exceptions -fno-rtti")
-    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O2 -msse2 -march=native -fno-exceptions")
-    SET(CMAKE_INSTALL_PREFIX "/usr/")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -g3 -msse2 -march=native -fno-exceptions -fno-rtti")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O2 -g3 -msse2 -march=native -fno-exceptions")
     MESSAGE("${CMAKE_CXX_FLAGS}")
 ENDIF(UNIX)
+
+# Set the install prefix
+IF(NOT $ENV{PREFIX} STREQUAL "")
+    SET(CMAKE_INSTALL_PREFIX $ENV{PREFIX})
+ELSE(NOT $ENV{PREFIX} STREQUAL "")
+    SET(CMAKE_INSTALL_PREFIX "/usr/")
+ENDIF(NOT $ENV{PREFIX} STREQUAL "")
+MESSAGE("--- Prefix = " ${CMAKE_INSTALL_PREFIX})
 
 FIND_PROGRAM(YASM_EXECUTABLE yasm)
 SET(YASM_OBJS)
 IF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "4")
-    MESSAGE("Using experimental asm routines")
+    MESSAGE("--- Using experimental asm routines")
     ADD_DEFINITIONS(-DEXPERIMENTAL_ASM)
     ADD_CUSTOM_COMMAND(
         OUTPUT dist_l2_funcs_exp_32.o
@@ -26,7 +33,7 @@ IF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "4")
     SET(YASM_OBJS ${YASM_OBJS} dist_l2_funcs_exp_32.o)
 ENDIF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "4")
 IF(YASM_EXECUTABLE AND CMAKE_SIZEOF_VOID_P MATCHES "8")
-    MESSAGE("Using experimental asm routines")
+    MESSAGE("--- Using experimental asm routines")
     ADD_DEFINITIONS(-DEXPERIMENTAL_ASM)
     ADD_CUSTOM_COMMAND(
         OUTPUT dist_l2_funcs_exp_64.o
