@@ -250,7 +250,7 @@ sl2u_2_16_exp:
     shufps xmm0, xmm0, 1
     addss xmm0, xmm1
 
-    movlps [local_dsq_out], xmm0
+    movss [local_dsq_out], xmm0
     add local_dsq_out, 4
     
     sub local_n, 1
