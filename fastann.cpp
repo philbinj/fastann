@@ -26,6 +26,8 @@ public:
     virtual void search_knn(const float_type* qus, unsigned N, unsigned K,
                             unsigned* argmins, accum_float_type* mins) const
     {
+        // Fix for when the user asks for too many points.
+        K = std::min(K, npoints_);
         std::vector< accum_float_type > dsqout(npoints_);
         std::vector< std::pair<accum_float_type,unsigned> > knn_prs(npoints_);
         for (unsigned n=0; n < N; ++n) {
@@ -76,6 +78,8 @@ public:
     virtual void search_knn(const float_type* qus, unsigned N, unsigned K,
                             unsigned* argmins, accum_float_type* mins) const
     {
+        // Fix for when the user asks for too many points.
+        K = std::min(K, npoints_);
         std::vector< std::pair<unsigned, accum_float_type> > nns(K);
         for (unsigned n=0; n < N; ++n) {
             kdt_.search(qus + n*ndims_, dist_, K, &nns[0], nchecks_);
